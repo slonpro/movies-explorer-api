@@ -17,15 +17,15 @@ module.exports.createMovies = (req, res, next) => {
 };
 
 module.exports.deleteSaveMovies = (req, res, next) => {
-  Movie.findById(req.params.cardId)
-    .then((card) => {
-      if (!card) {
+  Movie.findById(req.params.movieId)
+    .then((movie) => {
+      if (!movie) {
         throw new NotFoundError("Нет карточки с таким id");
       }
-      return card;
+      return movie;
     })
-    .then((card) => {
-      if (card.owner._id.toString() === req.user._id) {
+    .then((movie) => {
+      if (movie.owner._id.toString() === req.user._id) {
         Movie.findByIdAndRemove(req.params.movieId)
           .then((currentMovie) => res.status(201).send(currentMovie))
           .catch(next);
