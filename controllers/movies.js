@@ -1,15 +1,40 @@
-const BadRequest = require("../errors/bad-request");
-const ForbiddenError = require("../errors/forbidden-err");
-const NotFoundError = require("../errors/not-found-err");
-const Movie = require("../models/movie");
+const BadRequest = require('../errors/bad-request');
+const ForbiddenError = require('../errors/forbidden-err');
+const NotFoundError = require('../errors/not-found-err');
+const Movie = require('../models/movie');
 
 module.exports.createMovies = (req, res, next) => {
-  const { name, link } = req.body;
-  Movie.create({ name, link, owner: req.user._id })
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+  } = req.body;
+  Movie.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+    owner: req.user._id,
+  })
     .then((movie) => res.send(movie))
     .catch((err) => {
-      if (err.name === "ValidationError") {
-        next(new BadRequest(`${Object.values(err.errors).map((error) => error.message).join(", ")}`));
+      if (err.name === 'ValidationError') {
+        next(new BadRequest(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
       } else {
         next(err);
       }
@@ -17,10 +42,10 @@ module.exports.createMovies = (req, res, next) => {
 };
 
 module.exports.deleteSaveMovies = (req, res, next) => {
-  Movie.findById(req.params.movieId)
+  Movie.findById(req.params.moviesId)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError("Нет карточки с таким id");
+        throw new NotFoundError('Нет фильма с таким id');
       }
       return movie;
     })
@@ -30,7 +55,7 @@ module.exports.deleteSaveMovies = (req, res, next) => {
           .then((currentMovie) => res.status(201).send(currentMovie))
           .catch(next);
       } else {
-        throw new ForbiddenError("Недостаточно прав");
+        throw new ForbiddenError('Недостаточно прав');
       }
     })
     .catch(next);
