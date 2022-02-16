@@ -43,24 +43,6 @@ app.use(requestLogger);
 
 app.use(require('./routes/index'));
 
-app.post('/logout', (req, res, next) => {
-  if (NODE_ENV === 'production') {
-    res
-      .clearCookie('jwt', {
-        secure: true,
-        sameSite: 'none',
-        domain: 'movies-pro.nomoredomains.work',
-      });
-  } else {
-    res
-      .clearCookie('jwt', {
-
-      });
-  }
-  res.send({ message: 'Выход совершен успешно' });
-  next();
-});
-
 app.use(auth);
 
 app.use(require('./routes/users'));
