@@ -3,6 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 const {
   createMovies,
   deleteSaveMovies,
+  getAllSaveMovies,
 } = require('../controllers/movies');
 
 /* создаёт фильм с переданными в теле
@@ -37,4 +38,5 @@ router.delete('/movies/:moviesId', celebrate({
     moviesId: Joi.string().length(24).hex(),
   }),
 }), deleteSaveMovies);
+router.get('/movies', getAllSaveMovies);
 module.exports = router;

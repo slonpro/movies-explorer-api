@@ -55,10 +55,9 @@ module.exports.updateUser = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        next(new ConflictError('Пользователь с данным email существует'));
-      } else {
-        return bcrypt.hash(password, 10);
+        return next(new ConflictError('Пользователь с данным email существует'));
       }
+      return bcrypt.hash(password, 10);
     })
     .then((hash) => User.findByIdAndUpdate(
       req.user._id,

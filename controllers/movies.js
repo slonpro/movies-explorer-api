@@ -51,12 +51,20 @@ module.exports.deleteSaveMovies = (req, res, next) => {
     })
     .then((movie) => {
       if (movie.owner._id.toString() === req.user._id) {
-        Movie.findByIdAndRemove(req.params.movieId)
-          .then((currentMovie) => res.status(201).send(currentMovie))
+        Movie.findByIdAndRemove(req.params.moviesId)
+          .then((currentMovie) => res.status(200).send(currentMovie))
           .catch(next);
       } else {
         throw new ForbiddenError('Недостаточно прав');
       }
+    })
+    .catch(next);
+};
+
+module.exports.getAllSaveMovies = (req, res, next) => {
+  Movie.find({ owner: req.user._id })
+    .then((movie) => {
+      res.status(200).send(movie);
     })
     .catch(next);
 };

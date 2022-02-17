@@ -4,6 +4,8 @@ const {
   login,
   createUser,
 } = require('../controllers/users');
+const NotFoundError = require('../errors/not-found-err');
+const auth = require('../middlewares/auth');
 
 const { NODE_ENV } = process.env;
 
@@ -37,5 +39,14 @@ router.post('/logout', (req, res, next) => {
   }
   res.send({ message: 'Выход совершен успешно' });
   next();
+});
+
+router.use(auth);
+
+router.use(require('./users'));
+router.use(require('./movies'));
+
+router.use('/', (req, res, next) => {
+  next(new NotFoundError('Маршрут не найден'));
 });
 module.exports = router;

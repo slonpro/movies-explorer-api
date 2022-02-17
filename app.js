@@ -5,8 +5,6 @@ const { errors } = require('celebrate');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const auth = require('./middlewares/auth');
-const NotFoundError = require('./errors/not-found-err');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 require('dotenv').config();
 
@@ -16,9 +14,9 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 if (NODE_ENV === 'production') {
-  mongoose.connect(`mongodb://localhost:27017/${URL_MONGODB}`);
+  mongoose.connect(`${URL_MONGODB}`);
 } else {
-  mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
+  mongoose.connect('mongodb://localhost:27017/moviesdb');
 }
 
 app.use('*', cors({
@@ -43,14 +41,6 @@ app.use(requestLogger);
 
 app.use(require('./routes/index'));
 
-app.use(auth);
-
-app.use(require('./routes/users'));
-app.use(require('./routes/movies'));
-
-app.use('/', (req, res, next) => {
-  next(new NotFoundError('Маршрут не найден'));
-});
 app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => {
