@@ -51,21 +51,14 @@ module.exports.getCurrentUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
-  const { password, email } = req.body;
-  User.findOne({ email })
-    .then((user) => {
-      if (user) {
-        return next(new ConflictError('Пользователь с данным email существует'));
-      }
-      return bcrypt.hash(password, 10);
-    })
-    .then((hash) => User.findByIdAndUpdate(
-      req.user._id,
-      { password: hash, email },
-      { new: true, runValidators: true },
-    )
-      .then((user) => checkUser(user, res))
-      .catch(next));
+  const { name, email } = req.body;
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, email },
+    { new: true, runValidators: true },
+  )
+    .then((user) => checkUser(user, res))
+    .catch(next);
 };
 
 module.exports.login = (req, res, next) => {
@@ -84,7 +77,7 @@ module.exports.login = (req, res, next) => {
             maxAge: 3600000 * 12 * 7,
             secure: true,
             sameSite: 'none',
-            domain: 'movies-pro.nomoredomains.work',
+            domain: 'localhost:3001',
           });
       } else {
         res

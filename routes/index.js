@@ -29,7 +29,7 @@ router.post('/logout', (req, res, next) => {
       .clearCookie('jwt', {
         secure: true,
         sameSite: 'none',
-        domain: 'movies-pro.nomoredomains.work',
+        domain: 'localhost:3001',
       });
   } else {
     res

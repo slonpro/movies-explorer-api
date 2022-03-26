@@ -22,8 +22,6 @@ if (NODE_ENV === 'production') {
 app.use('*', cors({
   origin: [
     'http://localhost:3001',
-    'https://movies-pro.nomoredomains.work',
-    'http://movies-pro.nomoredomains.work',
   ],
   methods: ['OPTIONS', 'GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
