@@ -77,7 +77,7 @@ module.exports.login = (req, res, next) => {
             maxAge: 3600000 * 12 * 7,
             secure: true,
             sameSite: 'none',
-            domain: 'localhost:3001',
+            domain: 'movies-pro.nomoredomains.work',
           });
       } else {
         res
